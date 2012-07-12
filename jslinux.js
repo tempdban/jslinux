@@ -79,7 +79,7 @@ function start()
 
     init_state.params = params;
 
-    pc.load_binary("vmlinux-2.6.20.bin", 0x00100000, start2);
+    pc.load_binary("vmlinux.bin", 0x00100000, start2);
 }
 
 function start2(ret)
