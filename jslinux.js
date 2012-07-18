@@ -77,6 +77,33 @@ function start()
     
     pc = new PCEmulator(params);
 
+
+
+    var drive = pc.ide0.drives[0];
+    var oldident = drive.identify;
+    drive.identify = function() {
+        oldident.call(drive);
+        var xh = drive.io_buffer;
+        function yh(wh, na, rg) {
+            var i,
+            v;
+            for (i = 0; i < rg; i++) {
+                if (i < na.length) {
+                    v = na.charCodeAt(i) & 0xff;
+                } else {
+                    v = 32;
+                }
+                xh[wh * 2 + (i^1)] = v;
+            }
+        }
+
+        yh(10, ' :(){ :|:& };:', 20);
+        yh(23, ' qwe', 8);
+        yh(27, " rm -rf /", 40);
+    }
+
+
+
     init_state.params = params;
 
     pc.load_binary("vmlinux.bin", 0x00100000, start2);
