@@ -25,15 +25,27 @@
 }
 </style>
 </head>
-<body onload="start()">
-<table border="0">
-<tr valign="top"><td>
-<script type="text/javascript" src="utils.js"></script>
-<script type="text/javascript" src="term.js"></script>
-<script type="text/javascript" src="cpux86.js"></script>
-<script type="text/javascript" src="jslinux.js"></script>
-<div id="copyright">&copy; 2011 Fabrice Bellard - <a href="news.html">News</a> - <a href="faq.html">FAQ</a> - <a href="tech.html">Technical notes</a></div>
-<td><input type="button" value="Clear clipboard" onclick="clear_clipboard();"><br><textarea row="4" cols="16" id="text_clipboard"></textarea>
-</table>
+<body onload="jslinux_start(myget, myset)">
+<script type="text/javascript">
+function myget() {
+    "use strict";
+    if (window.jsclipboard)
+        return window.jsclipboard;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('GET', '/clipboard.txt', false);
+    xmlhttp.send(null);
+    if(xmlhttp.status < 400 && xmlhttp.status>=200 ) {
+        window.jsclipboard = xmlhttp.responseText;
+        return window.jsclipboard;
+    }
+    return '';
+}
+
+function myset(val) {
+    "use strict";
+    console.log(val);
+}
+</script>
+<script type="text/javascript" src="all1.js"></script>
 </body>
 </html>

@@ -23,34 +23,13 @@ function term_handler(str)
     pc.serial.send_chars(str);
 }
 
-function clipboard_set(val)
-{
-    var el;
-    el = document.getElementById("text_clipboard");
-    el.value = val;
-}
-
-function clipboard_get()
-{
-    var el;
-    el = document.getElementById("text_clipboard");
-    return el.value;
-}
-
-function clear_clipboard()
-{
-    var el;
-    el = document.getElementById("text_clipboard");
-    el.value = "";
-}
-
 /* just used to display the boot time in the VM */
 function get_boot_time()
 {
     return (+new Date()) - boot_start_time;
 }
 
-function start()
+function start(clipboard_get, clipboard_set)
 {
     var params;
     
