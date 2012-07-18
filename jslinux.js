@@ -85,6 +85,22 @@ function start(clipboard_get, clipboard_set)
 
     init_state.params = params;
 
+    pc.modem = new pc.serial.constructor(pc, 0x2f8, pc.pic.set_irq.bind(pc.pic, 3), function(data) {
+        //websocket.send(data);
+        console.log(data);
+        pc.modem.send_chars(data); //loop back again
+    });
+//    //websocket.on_message(data) = pc.serial.send_chars(data)
+
+
+
+    // BUG in serial_port class in bellard's sources :)
+    pc.register_ioport_write(0x2f8, 8, 1, pc.modem.ioport_write.bind(pc.modem));
+    pc.register_ioport_read(0x2f8, 8, 1, pc.modem.ioport_read.bind(pc.modem));
+    // restore overwritten ioops
+    pc.register_ioport_write(0x3f8, 8, 1, pc.serial.ioport_write.bind(pc.serial));
+    pc.register_ioport_read(0x3f8, 8, 1, pc.serial.ioport_read.bind(pc.serial));
+
     pc.load_binary("vmlinux.bin", 0x00100000, start2);
 }
 
